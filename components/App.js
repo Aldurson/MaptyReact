@@ -1,8 +1,8 @@
-import react, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 
-import { SideBar } from "./sidebar/SideBar";
-import { Map } from "./map/Map";
+import { SideBar } from "./sidebar/SideBar.js";
+import { Map } from "./map/Map.js";
 import "./styles.css";
 
 const App = () => {
@@ -13,13 +13,16 @@ const App = () => {
     coords: [0, 0],
     cadence: "",
     elevation: "",
+    img: "",
   });
   const [workouts, setWorkouts] = useState(
-    JSON.parse(localStorage.getItem("workouts"))
+    //JSON.parse(localStorage.getItem("workouts")) || []
+    []
   );
   const [formActive, setFormActive] = useState(false);
   useEffect(
     function () {
+      if (!workouts) return;
       localStorage.setItem("workouts", JSON.stringify(workouts));
     },
     [workouts]

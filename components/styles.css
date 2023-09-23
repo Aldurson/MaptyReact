@@ -142,7 +142,7 @@ body {
 }
 .container {
   display: grid;
-  grid-template-columns: 2fr 5fr;
+  grid-template-columns: 1fr 4fr;
 }
 
 /* GENERAL */
@@ -172,12 +172,12 @@ a:visited {
   overflow-y: scroll;
   overflow-x: hidden;
 }
+.hidden {
+  display: none;
+}
 
 .workouts::-webkit-scrollbar {
   width: 0;
-}
-.hidden {
-  display: none;
 }
 
 .workout {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { WorkoutEl } from "./WorkoutEl.js";
 import pic1 from "./icon.png";
 
 export const SideBar = ({
@@ -13,17 +13,10 @@ export const SideBar = ({
   const [cadenceActive, setCadenceActive] = useState(false);
   const [elevationActive, setElevationActive] = useState(true);
   const [count, setCount] = useState(0);
-  const ListItems = workouts.map((workout) => {
-    return (
-      <li key={workout.id} className={`workout--${workout.type}`}>
-        workout.description
-      </li>
-    );
-  });
 
   useEffect(
     function () {
-      if (count === 0) return;
+      if (count === 0) return; // for effect running on the first render, bug fix
       if (formState.type === "running")
         setWorkouts([
           ...workouts,
@@ -33,8 +26,11 @@ export const SideBar = ({
             type: formState.type,
             duration: formState.duration,
             distance: formState.duration,
+            img: formState.img,
             coords: formState.coords,
             cadence: formState.cadence,
+            pace: formState.duration / formState.distance,
+            speed: formState.distance / formState.duration,
             description: `${formState.type[0].toUpperCase()}${formState.type.slice(
               1
             )}`,
@@ -50,6 +46,9 @@ export const SideBar = ({
             type: formState.type,
             duration: formState.duration,
             distance: formState.distance,
+            pace: formState.duration / formState.distance / 60,
+            speed: formState.distance / formState.duration,
+            img: formState.img,
             coords: formState.coords,
             elevation: formState.elevation,
             description: `${formState.type[0].toUpperCase()}${formState.type.slice(
@@ -115,6 +114,7 @@ export const SideBar = ({
             <label className="form__label">Distance</label>
             <input
               onChange={updateFormState}
+              autoComplete="off"
               value={formState.distance}
               className="form__input form__input--distance"
               placeholder="km"
@@ -125,6 +125,7 @@ export const SideBar = ({
             <label className="form__label">Duration</label>
             <input
               onChange={updateFormState}
+              autoComplete="off"
               value={formState.duration}
               className="form__input form__input--duration"
               placeholder="min"
@@ -140,6 +141,7 @@ export const SideBar = ({
             <input
               onChange={updateFormState}
               value={formState.cadence}
+              autoComplete="off"
               className="form__input form__input--cadence"
               placeholder="step/min"
               name="cadence"
@@ -154,6 +156,7 @@ export const SideBar = ({
             <input
               onChange={updateFormState}
               value={formState.elevation}
+              autoComplete="off"
               className="form__input form__input--elevation"
               placeholder="meters"
               name="elevation"
@@ -161,13 +164,9 @@ export const SideBar = ({
           </div>
           <input type="submit" className="hidden" />
         </form>
-        {workouts.map((workout) => {
-          return (
-            <li key={workout.id} className={`workout--${workout.type}`}>
-              {workout.description}
-            </li>
-          );
-        })}
+        {workouts.map((workout) => (
+          <WorkoutEl key={workout.id} workout={workout} />
+        ))}
       </ul>
       <p className="copyright">
         &copy; Copyright by{" "}
