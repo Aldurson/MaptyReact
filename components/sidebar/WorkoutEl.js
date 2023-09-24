@@ -1,8 +1,12 @@
 import React from "react";
-
+import "../styles.css";
 export const WorkoutEl = ({ workout }) => {
   return (
-    <li className={`workout workout--${workout.type}`} key={workout.id}>
+    <li
+      id={workout.id}
+      className={`workout workout--${workout.type}`}
+      key={workout.id}
+    >
       <h2 className="workout__title">{workout.description}</h2>
       <div className="workout__details">
         <span className="workout__icon">

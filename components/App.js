@@ -16,10 +16,12 @@ const App = () => {
     img: "",
   });
   const [workouts, setWorkouts] = useState(
-    //JSON.parse(localStorage.getItem("workouts")) || []
-    []
+    JSON.parse(localStorage.getItem("workouts")) || []
+    //[]
+    //here is where one has the data array storage
   );
   const [formActive, setFormActive] = useState(false);
+  const [mCoords, setMCoords] = useState(null);
   useEffect(
     function () {
       if (!workouts) return;
@@ -36,11 +38,13 @@ const App = () => {
         setFormActive={setFormActive}
         setWorkouts={setWorkouts}
         workouts={workouts}
+        setMCoords={setMCoords}
       />
       <Map
         setFormActive={setFormActive}
         setFormState={setFormState}
         workouts={workouts}
+        mCoords={mCoords}
       />
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { WorkoutEl } from "./WorkoutEl.js";
 import pic1 from "./icon.png";
+import "../styles.css";
 
 export const SideBar = ({
   formState,
@@ -9,6 +10,7 @@ export const SideBar = ({
   setFormActive,
   setWorkouts,
   workouts,
+  setMCoords,
 }) => {
   const [cadenceActive, setCadenceActive] = useState(false);
   const [elevationActive, setElevationActive] = useState(true);
@@ -16,46 +18,39 @@ export const SideBar = ({
 
   useEffect(
     function () {
+      const formatDate = (date) => {
+        const options = {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+        };
+        return Intl.DateTimeFormat("en-ZA", options).format(date);
+      };
+      const computeDescription = (type, date) => {
+        return `${type[0].toUpperCase()}${type.slice(1)} on ${formatDate(
+          date
+        )}`;
+      };
       if (count === 0) return; // for effect running on the first render, bug fix
-      if (formState.type === "running")
-        setWorkouts([
-          ...workouts,
-          {
-            id: (Date.now() + "").slice(-10),
-            date: new Date(),
-            type: formState.type,
-            duration: formState.duration,
-            distance: formState.duration,
-            img: formState.img,
-            coords: formState.coords,
-            cadence: formState.cadence,
-            pace: formState.duration / formState.distance,
-            speed: formState.distance / formState.duration,
-            description: `${formState.type[0].toUpperCase()}${formState.type.slice(
-              1
-            )}`,
-          },
-        ]);
-
-      if (formState.type === "cycling")
-        setWorkouts([
-          ...workouts,
-          {
-            id: (Date.now() + "").slice(-10),
-            date: new Date(),
-            type: formState.type,
-            duration: formState.duration,
-            distance: formState.distance,
-            pace: formState.duration / formState.distance / 60,
-            speed: formState.distance / formState.duration,
-            img: formState.img,
-            coords: formState.coords,
-            elevation: formState.elevation,
-            description: `${formState.type[0].toUpperCase()}${formState.type.slice(
-              1
-            )}`,
-          },
-        ]);
+      setWorkouts([
+        ...workouts,
+        {
+          id: (Date.now() + "").slice(-10),
+          date: new Date(),
+          type: formState.type,
+          duration: formState.duration,
+          distance: formState.duration,
+          img: formState.img,
+          coords: formState.coords,
+          cadence: formState.cadence,
+          pace: formState.duration / formState.distance,
+          speed: formState.distance / formState.duration,
+          description: computeDescription(formState.type, formState.date),
+        },
+      ]);
       setFormActive(false);
       clearForm();
     },
@@ -89,11 +84,20 @@ export const SideBar = ({
     evt.preventDefault();
     setCount(count + 1);
   }
-
+  function moveTo(evt) {
+    //console.log(evt);
+    const temp = evt.target.closest(".workout");
+    if (!temp) return;
+    //console.log(temp.getAttribute("id"));
+    const identi = temp.getAttribute("id");
+    const workout = workouts.find((work) => work.id === identi);
+    //console.log(workout);
+    setMCoords(workout.coords);
+  }
   return (
     <div className="sidebar">
       <img src={pic1} alt="logo picture" className="logo" />
-      <ul className="workouts">
+      <ul className="workouts" onClick={moveTo}>
         <form
           onSubmit={submitForm}
           className={formActive ? "form" : "form hidden"}
