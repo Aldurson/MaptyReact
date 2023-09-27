@@ -96,6 +96,7 @@ export const Map = ({ setFormActive, setFormState, workouts, mCoords }) => {
               stroke={false}
               radius={70}
               color="red"
+              className="blink"
             />
             <Popup
               className={`${workout.type}-popup`}
